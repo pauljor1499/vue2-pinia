@@ -26,6 +26,7 @@ export const useTaskStore = defineStore("taskStore", {
 
         favs: (state) => {
             //this. refers to the state's object
+            //this serves like a computed property
             return state.tasks.filter((t) => t.isFav == true);
         },
     },
@@ -33,6 +34,16 @@ export const useTaskStore = defineStore("taskStore", {
     actions: {
         addNewTask(new_task) {
             this.tasks.push(new_task);
+        },
+
+        removeTask(task_id) {
+            var index = this.tasks.findIndex((item) => item.id === task_id);
+            this.tasks.splice(index, 1);
+        },
+
+        toggleFav(task_id) {
+            var index = this.tasks.findIndex((item) => item.id === task_id);
+            this.tasks[index].isFav = !this.tasks[index].isFav;
         },
     },
 });
