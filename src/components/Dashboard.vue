@@ -1,5 +1,22 @@
 <template>
     <div class="main-content">
+        <div class="text-center">
+            <v-dialog
+                v-if="store.loading ? (dialog = true) : ''"
+                persistent
+                v-model="dialog"
+                width="500"
+            >
+                <v-card>
+                    <v-card-title></v-card-title>
+                    <v-card-text class="justify-center">
+                        <v-progress-circular indeterminate color="primary" />
+                        <span class="text-h5"> Please wait... </span>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
+        </div>
+
         <body>
             <v-card>
                 <v-card-title>
@@ -119,6 +136,8 @@ export default {
             new_task: {
                 title: "",
             },
+
+            dialog: false,
         };
     },
 
@@ -139,6 +158,14 @@ export default {
 
         toggleFav(task_id) {
             this.store.toggleFav(task_id);
+        },
+    },
+
+    watch: {
+        dialog(val) {
+            if (!val) return;
+
+            setTimeout(() => (this.dialog = false), 4000);
         },
     },
 
