@@ -141,6 +141,10 @@ export default {
             this.store.toggleFav(task_id);
         },
     },
+
+    mounted() {
+        this.store.getAllTasks();
+    },
 };
 </script>
 
