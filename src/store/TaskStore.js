@@ -103,7 +103,7 @@ export const useTaskStore = defineStore("taskStore", {
         // },
 
         // removeTask(task_id) {
-        //     var index = this.tasks.findIndex((item) => item.id === task_id);
+        //     var index = this.tasks.findIndex((item) => item. id === task_id);
         //     this.tasks.splice(index, 1);
         // },
 
