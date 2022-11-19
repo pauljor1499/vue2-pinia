@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 
 var BASE_URL = "http://localhost:3000/tasks/";
 
@@ -31,39 +32,66 @@ export const useTaskStore = defineStore("taskStore", {
             this.tasks.push(new_task);
 
             //this is for the json file
-            const response = await fetch(BASE_URL, {
-                method: "POST",
-                body: JSON.stringify(new_task),
-                headers: { "Content-Type": "application/json" },
-            });
+            axios
+                .post(BASE_URL, new_task)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
 
-            if (response.error) console.log(response.error);
+            //Fetch API
+            // const response = await fetch(BASE_URL, {
+            //     method: "POST",
+            //     body: JSON.stringify(new_task),
+            //     headers: { "Content-Type": "application/json" },
+            // });
+            // if (response.error) console.log(response.error);
         },
 
         async removeTask(task_id) {
             var index = this.tasks.findIndex((item) => item.id === task_id);
             this.tasks.splice(index, 1);
 
-            const response = await fetch(BASE_URL + task_id, {
-                method: "DELETE",
-            });
+            axios
+                .delete(BASE_URL + task_id)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
 
-            if (response.error) console.log(response.error);
+            // const response = await fetch(BASE_URL + task_id, {
+            //     method: "DELETE",
+            // });
+            // if (response.error) console.log(response.error);
         },
 
         async toggleFav(task_id) {
             var index = this.tasks.findIndex((item) => item.id === task_id);
             this.tasks[index].isFav = !this.tasks[index].isFav;
 
-            const response = await fetch(BASE_URL + task_id, {
-                method: "PATCH",
-                body: JSON.stringify({
+            axios
+                .patch(BASE_URL + task_id, {
                     isFav: this.tasks[index].isFav,
-                }),
-                headers: { "Content-Type": "application/json" },
-            });
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
 
-            if (response.error) console.log(response.error);
+            // const response = await fetch(BASE_URL + task_id, {
+            //     method: "PATCH",
+            //     body: JSON.stringify({
+            //         isFav: this.tasks[index].isFav,
+            //     }),
+            //     headers: { "Content-Type": "application/json" },
+            // });
+            // if (response.error) console.log(response.error);
         },
 
         sleep(ms) {
