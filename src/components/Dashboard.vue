@@ -11,7 +11,7 @@
                     <v-card-title></v-card-title>
                     <v-card-text class="justify-center">
                         <v-progress-circular indeterminate color="primary" />
-                        <span class="text-h5"> Please wait... </span>
+                        <span class="text-h7"> Please wait... </span>
                     </v-card-text>
                 </v-card>
             </v-dialog>

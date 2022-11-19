@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 
+var BASE_URL = "http://localhost:3000/tasks/";
+
 export const useTaskStore = defineStore("taskStore", {
     state: () => ({
         tasks: [],
@@ -17,29 +19,69 @@ export const useTaskStore = defineStore("taskStore", {
     actions: {
         async getAllTasks() {
             this.loading = true;
-            await this.sleep(3000); //test
-            const response = await fetch("http://localhost:3000/tasks");
+            // await this.sleep(3000); //test
+            const response = await fetch(BASE_URL);
             const data = await response.json();
             this.tasks = data;
             this.loading = false;
+        },
+
+        async addNewTask(new_task) {
+            //this is for the current state
+            this.tasks.push(new_task);
+
+            //this is for the json file
+            const response = await fetch(BASE_URL, {
+                method: "POST",
+                body: JSON.stringify(new_task),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            if (response.error) console.log(response.error);
+        },
+
+        async removeTask(task_id) {
+            var index = this.tasks.findIndex((item) => item.id === task_id);
+            this.tasks.splice(index, 1);
+
+            const response = await fetch(BASE_URL + task_id, {
+                method: "DELETE",
+            });
+
+            if (response.error) console.log(response.error);
+        },
+
+        async toggleFav(task_id) {
+            var index = this.tasks.findIndex((item) => item.id === task_id);
+            this.tasks[index].isFav = !this.tasks[index].isFav;
+
+            const response = await fetch(BASE_URL + task_id, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    isFav: this.tasks[index].isFav,
+                }),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            if (response.error) console.log(response.error);
         },
 
         sleep(ms) {
             return new Promise((resolve) => setTimeout(resolve, ms));
         },
 
-        addNewTask(new_task) {
-            this.tasks.push(new_task);
-        },
+        // addNewTask(new_task) {
+        //     this.tasks.push(new_task);
+        // },
 
-        removeTask(task_id) {
-            var index = this.tasks.findIndex((item) => item.id === task_id);
-            this.tasks.splice(index, 1);
-        },
+        // removeTask(task_id) {
+        //     var index = this.tasks.findIndex((item) => item.id === task_id);
+        //     this.tasks.splice(index, 1);
+        // },
 
-        toggleFav(task_id) {
-            var index = this.tasks.findIndex((item) => item.id === task_id);
-            this.tasks[index].isFav = !this.tasks[index].isFav;
-        },
+        // toggleFav(task_id) {
+        //     var index = this.tasks.findIndex((item) => item.id === task_id);
+        //     this.tasks[index].isFav = !this.tasks[index].isFav;
+        // },
     },
 });
