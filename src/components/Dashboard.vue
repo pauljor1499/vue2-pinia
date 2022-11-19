@@ -2,7 +2,7 @@
     <div class="main-content">
         <div class="text-center">
             <v-dialog
-                v-if="taskStore.loading ? (dialog = true) : ''"
+                v-if="store.loading ? (dialog = true) : ''"
                 persistent
                 v-model="dialog"
                 width="500"
@@ -36,9 +36,7 @@
                             </v-btn>
                         </v-col>
                         <v-col cols="12">
-                            <v-btn @click="taskStore.$reset()">
-                                Reset State</v-btn
-                            >
+                            <v-btn @click="store.$reset()"> Reset State</v-btn>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -61,7 +59,7 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="(item, index) in taskStore.tasks"
+                                    v-for="(item, index) in store.tasks"
                                     :key="index + 'a'"
                                 >
                                     <td>
@@ -117,7 +115,7 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="(item, index) in taskStore.favs"
+                                    v-for="(item, index) in store.favs"
                                     :key="index + 'b'"
                                 >
                                     <td>
@@ -142,7 +140,7 @@ import { useTaskStore } from "@/store/TaskStore";
 export default {
     data() {
         return {
-            taskStore: useTaskStore(),
+            store: useTaskStore(),
 
             new_task: {
                 title: "",
@@ -160,15 +158,15 @@ export default {
                 isFav: false,
             };
 
-            this.taskStore.addNewTask(task);
+            this.store.addNewTask(task);
         },
 
         removeTask(task_id) {
-            this.taskStore.removeTask(task_id);
+            this.store.removeTask(task_id);
         },
 
         toggleFav(task_id) {
-            this.taskStore.toggleFav(task_id);
+            this.store.toggleFav(task_id);
         },
     },
 
@@ -181,7 +179,7 @@ export default {
     },
 
     mounted() {
-        this.taskStore.getAllTasks();
+        this.store.getAllTasks();
     },
 };
 </script>
